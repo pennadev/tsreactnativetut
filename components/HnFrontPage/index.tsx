@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { View, ScrollView, ActivityIndicator, Text, StyleSheet } from 'react-native';
-
+import {Link } from 'react-router-native'
 interface State {
     isLoading: Boolean;
     data: JSONResponse;
@@ -40,7 +40,7 @@ export default class HnFrontPage extends React.Component<{}, State> {
         })
     }
     
-    render(){
+    render() {
         if (this.state.isLoading) {
             return (
                 <ActivityIndicator size="large" color="#0055FF"/>
@@ -49,7 +49,7 @@ export default class HnFrontPage extends React.Component<{}, State> {
 
         return (
             <View> 
-                <ScrollView>
+                <ScrollView style={styles.scrollParent}>
                     {this.renderItems(this.state.data)}
                 </ScrollView>
             </View>
@@ -59,13 +59,23 @@ export default class HnFrontPage extends React.Component<{}, State> {
     renderItems(items: JSONResponse) {
         return items.hits.map((item, i) => {
             console.log("title " + item.title);
-            return <Text key={i} style={{padding: 10}}> {item.title} </Text>
+            return(
+            <Link to="/item" key={i}>
+                <Text
+                     key={i} style={styles.text}> {item.title} 
+                </Text>
+            </Link>)
         })
     }
 }
 
 const styles = StyleSheet.create({
     text: {
-        padding: 10
+        padding: 10,
+        color: '#FFF'
+    },
+
+    scrollParent: {
+        marginTop: 20 
     }
 })

@@ -2,16 +2,16 @@ import * as React from 'react';
 import {Button, Text, View, StyleSheet} from "react-native";
 
 
-interface MyProps {
+interface CounterProps {
     name: string,
 };
 
-interface State {
+interface CounterState {
     counter: number,
 };
 
-export default class Counter extends React.Component<MyProps, State> {
-    constructor(props: MyProps) {
+export default class Counter extends React.Component<CounterProps, CounterState> {
+    constructor(props: CounterProps) {
         super(props)
         this.state = {counter: 0}
     }
@@ -24,9 +24,9 @@ export default class Counter extends React.Component<MyProps, State> {
             </View>
         )
     }
-
+    
     onButtonClick() {
-        this.setState((prevState: State) => {
+        this.setState((prevState: CounterState) => {
             return {counter: prevState.counter + 1}
         });
     }
@@ -35,7 +35,6 @@ export default class Counter extends React.Component<MyProps, State> {
 
 const counterstyles = StyleSheet.create({
     text: {
-        
         color: '#FFF'
     }
 })

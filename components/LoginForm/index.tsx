@@ -7,18 +7,18 @@ interface LoginState {
 }
 
 export default class LoginForm extends React.Component<{}, LoginState> {
-    render(){
+    render() {
         return (
-            <View style={{padding: 10}}>
-                <TextInput 
-                    style={{height: 40}} 
+            <View style={{ padding: 10 }}>
+                <TextInput
+                    style={{ height: 40 }}
                     placeholder="Username"
-                    onChangeText={(text) => this.setState({user: text})}/>
+                    onChangeText={(text) => this.setState({ user: text })} />
 
-                <TextInput 
-                    style={{height: 40}} 
+                <TextInput
+                    style={{ height: 40 }}
                     placeholder="Pass"
-                    onChangeText={ (text) => this.setState({pass: text}) }/>
+                    onChangeText={(text) => this.setState({ pass: text })} />
             </View>
         )
     }

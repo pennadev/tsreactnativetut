@@ -1,15 +1,16 @@
 import * as React from 'react';
 import {View} from 'react-native';
-import { NativeRouter, Route, Link } from 'react-router-native'
-import MainPage  from "./components/MainPage";
+import {NativeRouter, Route, Link, BackButton} from 'react-router-native'
+import MainPage from "./components/MainPage";
 
-export default class App extends React.Component<{}> {
+export default class App extends React.Component < {} > {
     render() {
         return (
             <NativeRouter >
-                <MainPage />
-            </NativeRouter>
+                <BackButton >
+                    <Route exact path="/" component={MainPage}/>
+                </BackButton >
+            </NativeRouter >
         );
     }
 }
-

@@ -24,11 +24,15 @@
     "test": "node node_modules/jest/bin/jest.js"
   },
   "dependencies": {
+    "@types/react-redux": "^5.0.15",
     "@types/react-router": "^4.0.22",
     "@types/react-router-native": "^4.2.0",
+    "@types/redux": "^3.6.0",
     "expo": "^25.0.0",
     "react": "16.2.0",
     "react-native": "0.52.0",
-    "react-router-native": "^4.2.0"
+    "react-redux": "^5.0.7",
+    "react-router-native": "^4.2.0",
+    "redux": "^3.7.2"
   }
 }

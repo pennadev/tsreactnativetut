@@ -1,26 +1,34 @@
 import * as React from 'react';
-import {StyleSheet, Text, View, Image, StatusBar} from 'react-native';
+import { StyleSheet, Text, View, Image, StatusBar } from 'react-native';
 
 import Counter from "../Counter";
 import LoginForm from "../LoginForm"
 import HnFrontPage from "../HnFrontPage"
+import HnItem from '../HnItem';
+import { Route, Switch, Redirect } from 'react-router';
+import { NativeRouter, BackButton } from 'react-router-native';
 
 export default class MainPage extends React.Component<{}> {
+    constructor(props: any) {
+        super(props)
+    }
+
     render() {
         return (
-            <View style={styles.container}>
-            <StatusBar
-                backgroundColor="blue"
-                barStyle="default"
-            />
+            <NativeRouter>
+                <View style={styles.container}>
+                    <BackButton />
+                    <View style={styles.topBar} >
+                        <Text style={styles.topBarText}> Hn Reader </Text>
+                    </View>
+                    
+                    <Route exact path="/" component={HnFrontPage} />
 
-            <View style={styles.topBar} >
-               <Text style={styles.topBarText}> Hn Reader </Text>
-            </View>
-            
-            <HnFrontPage />
-       
-            </View>
+                    <Route path="/items/:id" render={({ match }) => {
+                        return <HnItem title={match.params.id} />
+                    }} />
+                </View>
+            </NativeRouter>
         );
     }
 }
@@ -35,11 +43,13 @@ const styles = StyleSheet.create({
     topBar: {
         width: '100%',
         height: 50,
-        backgroundColor: '#12F',
+        backgroundColor: 'cornflowerblue',
         alignItems: 'center',
         justifyContent: 'center',
     },
     topBarText: {
-        color: '#FFF'
+        color: '#FFF',
+        fontWeight: 'bold',
+        fontSize: 20
     }
 });

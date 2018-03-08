@@ -12,9 +12,7 @@ export default class HnItem extends React.Component<ItemProps, {}> {
 
     render() {
         return (
-            <Text style={{
-                padding: 20
-            }}>
+            <Text style={{padding: 20}}>
                 {this.props.title}
             </Text>
         )

@@ -18,7 +18,6 @@ interface JSONResponse {
 }
 
 export default class HnFrontPage extends React.Component<{}, State> {
-
     constructor(props: any) {
         super(props)
         this.state = {
@@ -52,17 +51,7 @@ export default class HnFrontPage extends React.Component<{}, State> {
         return (
             <View>
                 <FlatList
-                    renderItem={(item: any) => {
-                        return (
-                            <Link to={"/items/" + item.item.created_at_i} >
-                                <View style={styles.scrollParent}>
-                                    <Text  style={styles.textItem}>
-                                        {item.item.title}
-                                    </Text>
-                                </View>
-                            </Link>
-                        )
-                    }}
+                    renderItem={this.renderListItem.bind(this)}
                     data={this.state.data.hits}
                     keyExtractor={(item, index) => index.toString()}
                 />
@@ -70,16 +59,17 @@ export default class HnFrontPage extends React.Component<{}, State> {
         )
     }
 
-    // renderItems(items: Hits) {
-    //     return items
-    //         .hits
-    //         .map((item, i) => {
-    //             console.log("title " + item.title);
-    //             return (
-
-    //             )
-    //         })
-    // }
+    renderListItem(item: any) {
+        return (
+            <Link to={"/items/" + item.item.created_at_i} >
+                <View style={styles.scrollParent}>
+                    <Text style={styles.textItem}>
+                        {item.item.title}
+                    </Text>
+                </View>
+            </Link>
+        )
+    }
 }
 
 const styles = StyleSheet.create({

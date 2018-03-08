@@ -18,12 +18,12 @@ export default class MainPage extends React.Component<{}> {
             <NativeRouter>
                 <View style={styles.container}>
                     <BackButton />
+
                     <View style={styles.topBar} >
                         <Text style={styles.topBarText}> Hn Reader </Text>
                     </View>
-                    
-                    <Route exact path="/" component={HnFrontPage} />
 
+                    <Route exact path="/" component={HnFrontPage} />
                     <Route path="/items/:id" render={({ match }) => {
                         return <HnItem title={match.params.id} />
                     }} />

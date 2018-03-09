@@ -1,14 +1,14 @@
 import { RouterAction, LocationChangeAction } from 'react-router-redux'
 import { $call } from 'utility-types'
+import { hnActions } from './HnItems/actions';
 
 const returnsOfActions = [
-    //register actions types
-    //gen aici ar fi toate actiunle din app
-].map($call)
+    ...Object.values(hnActions)
+].map($call);
 
 type AppAction = typeof returnsOfActions[number]
 type ReactRouterAction = RouterAction | LocationChangeAction
 
 export type RootAction =
-    | AppAction
-    | ReactRouterAction
+ | AppAction
+ | ReactRouterAction

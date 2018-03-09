@@ -7,6 +7,11 @@ import HnFrontPage from "../HnFrontPage"
 import HnItem from '../HnItem';
 import { Route, Switch, Redirect } from 'react-router';
 import { NativeRouter, BackButton } from 'react-router-native';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { RootState } from 'redux/store';
+import { HnState } from '../../redux/HnItems/reducers';
+
 
 export default class MainPage extends React.Component<{}> {
     constructor(props: any) {
@@ -18,11 +23,11 @@ export default class MainPage extends React.Component<{}> {
             <NativeRouter>
                 <View style={styles.container}>
                     <BackButton />
-
-                    <View style={styles.topBar} >
+                    
+                    <View style={styles.topBar}>
                         <Text style={styles.topBarText}> Hn Reader </Text>
                     </View>
-
+                    
                     <Route exact path="/" component={HnFrontPage} />
                     <Route path="/items/:id" render={({ match }) => {
                         return <HnItem title={match.params.id} />

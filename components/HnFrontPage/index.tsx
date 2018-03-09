@@ -2,10 +2,13 @@ import * as React from 'react'
 import { View, ScrollView, ActivityIndicator, Text, StyleSheet, FlatList } from 'react-native';
 import { Link, Route } from 'react-router-native'
 import HnItem from "../HnItem"
+import store, { RootState } from '../../redux/store';
+import { hnActions } from '../../redux/HnItems/actions';
+import { connect } from 'react-redux';
 
 interface State {
     isLoading: Boolean;
-    data: JSONResponse;
+    data: any;
 }
 
 interface Hits {
@@ -17,9 +20,17 @@ interface JSONResponse {
     hits: Hits[]
 }
 
-export default class HnFrontPage extends React.Component<{}, State> {
+function mapStateToProps(state: RootState) {
+    return {
+        isLoading: state.hnState.isFetching,
+        data: state.hnState.data
+    }
+}
+
+
+class _HnFrontPage extends React.Component<{ isLoading: boolean; data: any; }> {
     constructor(props: any) {
-        super(props)
+        super(props);
         this.state = {
             isLoading: true,
             data: {} as JSONResponse
@@ -27,20 +38,15 @@ export default class HnFrontPage extends React.Component<{}, State> {
     }
 
     componentDidMount() {
-        return fetch("https://hn.algolia.com/api/v1/search?tags=front_page")
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState((previousState) => {
-                    console.log(responseJson)
-                    return { isLoading: false, data: responseJson }
-                });
-            }).catch((error) => {
-                console.error(error);
-            })
+        store.subscribe(() => {
+            console.log(store.getState())
+        })
+
+        store.dispatch(hnActions.fetchFrontPage())
     }
 
     render() {
-        if (this.state.isLoading) {
+        if (this.props.isLoading) {
             return (
                 <View style={styles.loadingView}>
                     <ActivityIndicator size="large" color="#0055FF" />
@@ -52,7 +58,7 @@ export default class HnFrontPage extends React.Component<{}, State> {
             <View>
                 <FlatList
                     renderItem={this.renderListItem.bind(this)}
-                    data={this.state.data.hits}
+                    data={this.props.data.hits}
                     keyExtractor={(item, index) => index.toString()}
                 />
             </View>
@@ -61,7 +67,7 @@ export default class HnFrontPage extends React.Component<{}, State> {
 
     renderListItem(item: any) {
         return (
-            <Link to={"/items/" + item.item.created_at_i} >
+            <Link to={"/items/" + item.item.created_at_i}>
                 <View style={styles.scrollParent}>
                     <Text style={styles.textItem}>
                         {item.item.title}
@@ -87,4 +93,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
-})
+});
+
+export default connect(mapStateToProps)(_HnFrontPage)

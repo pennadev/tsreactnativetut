@@ -1,12 +1,23 @@
 {
   "compilerOptions": {
+    "baseUrl": "./", // enables absolute path imports
+    "paths": { // define absolute path mappings
+      "redux": ["typings/redux.d.ts"],
+      "@src/*": ["./*"] // will enable -> import { ... } from '@src/components'
+      // in webpack you need to add -> resolve: { alias: { '@src': PATH_TO_SRC } }
+    },
     "target": "es5",
     "module": "es2015",
     "outDir": "build/dist",
     "sourceMap": true,
     "experimentalDecorators": true,
     "jsx": "react-native",
-    "lib": ["dom", "es2015", "es2016"],
+    "lib": [
+      "dom",
+      "es2015",
+      "es2016",
+      "es2017"
+    ],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "noEmitHelpers": true,

@@ -14,7 +14,7 @@ export default class LoginForm extends React.Component<{}, LoginState> {
                     style={{ height: 40 }}
                     placeholder="Username"
                     onChangeText={(text) => this.setState({ user: text })} />
-
+                
                 <TextInput
                     style={{ height: 40 }}
                     placeholder="Pass"

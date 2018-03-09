@@ -4,15 +4,15 @@ import { Button, Text, View, StyleSheet } from "react-native";
 
 interface CounterProps {
     name: string,
-};
+}
 
 interface CounterState {
     counter: number,
-};
+}
 
 export default class Counter extends React.Component<CounterProps, CounterState> {
     constructor(props: CounterProps) {
-        super(props)
+        super(props);
         this.state = { counter: 0 }
     }
 
@@ -37,4 +37,4 @@ const counterstyles = StyleSheet.create({
     text: {
         color: '#FFF'
     }
-})
+});

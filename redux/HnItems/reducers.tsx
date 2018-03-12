@@ -4,7 +4,7 @@ import { combineReducers } from 'redux';
 import { GOT_FRONT_PAGE } from './types';
 
 export type HnState = {
-    readonly isFetching: boolean;
+    readonly isFetching: Boolean;
     readonly data: any;
 }
 
@@ -25,7 +25,6 @@ export const hnReducer = combineReducers<HnState>({
             default:
                 return false
         }
-
     },
     data: (state = {}, action) => {
         switch (action.type) {

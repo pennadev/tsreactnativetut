@@ -85,6 +85,18 @@
     component-type "^1.2.1"
     join-component "^1.1.0"
 
+"@types/expo@^25.0.0":
+  version "25.0.0"
+  resolved "https://registry.yarnpkg.com/@types/expo/-/expo-25.0.0.tgz#a5d51599b130adc165f96864d8cbead18e93f3d7"
+  dependencies:
+    "@types/fbemitter" "*"
+    "@types/react" "*"
+    "@types/react-native" "*"
+
+"@types/fbemitter@*":
+  version "2.0.32"
+  resolved "https://registry.yarnpkg.com/@types/fbemitter/-/fbemitter-2.0.32.tgz#8ed204da0f54e9c8eaec31b1eec91e25132d082c"
+
 "@types/history@*":
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.2.tgz#12cfaba693ba20f114ed5765467ff25fdf67ddb0"
@@ -93,7 +105,7 @@
   version "22.2.0"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-22.2.0.tgz#55ce83139f7ad1b48b414c3927746614c6963c0f"
 
-"@types/react-native@^0.52.0":
+"@types/react-native@*", "@types/react-native@^0.52.0":
   version "0.52.16"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.52.16.tgz#d474cdba5b44e4b695e4c918c88d3e171772c298"
   dependencies:

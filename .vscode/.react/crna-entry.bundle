@@ -102314,7 +102314,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(React.Component);
 
     exports.default = App;
-},764,[765,110,766,794,797,821],"typenativetut/App.tsx");
+},764,[765,110,766,794,911,797],"typenativetut/App.tsx");
 __d(function (global, require, module, exports, _dependencyMap) {
     var __extends;
 
@@ -106045,13 +106045,21 @@ __d(function (global, require, module, exports, _dependencyMap) {
             return _super.call(this, props) || this;
         }
 
+        MainPage.prototype.componentDidMount = function () {
+            _reactNative.NetInfo.isConnected.addEventListener('connectionChange', function (connectionInfo) {
+                console.log({
+                    connectionInfo: connectionInfo
+                });
+            });
+        };
+
         MainPage.prototype.render = function () {
             return React.createElement(
-                _reactRouterNative.NativeRouter,
+                _reactRouterNative.MemoryRouter,
                 {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 14
+                        lineNumber: 24
                     }
                 },
                 React.createElement(
@@ -106060,13 +106068,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
                         style: styles.container,
                         __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 15
+                            lineNumber: 25
                         }
                     },
                     React.createElement(_reactRouterNative.BackButton, {
                         __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 16
+                            lineNumber: 26
                         }
                     }),
                     React.createElement(
@@ -106075,7 +106083,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                             style: styles.topBar,
                             __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 18
+                                lineNumber: 28
                             }
                         },
                         React.createElement(
@@ -106084,19 +106092,27 @@ __d(function (global, require, module, exports, _dependencyMap) {
                                 style: styles.topBarText,
                                 __source: {
                                     fileName: _jsxFileName,
-                                    lineNumber: 19
+                                    lineNumber: 29
                                 }
                             },
                             " Hn Reader "
                         )
                     ),
                     React.createElement(_reactRouter.Route, {
+                        path: "/offline",
+                        component: OfflineBar,
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 31
+                        }
+                    }),
+                    React.createElement(_reactRouter.Route, {
                         exact: true,
                         path: "/",
                         component: _HnFrontPage2.default,
                         __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 22
+                            lineNumber: 32
                         }
                     }),
                     React.createElement(_reactRouter.Route, {
@@ -106104,16 +106120,16 @@ __d(function (global, require, module, exports, _dependencyMap) {
                         render: function render(_a) {
                             var match = _a.match;
                             return React.createElement(_HnItem2.default, {
-                                title: match.params.id,
+                                hit: match.params.id,
                                 __source: {
                                     fileName: _jsxFileName,
-                                    lineNumber: 25
+                                    lineNumber: 35
                                 }
                             });
                         },
                         __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 23
+                            lineNumber: 33
                         }
                     })
                 )
@@ -106125,12 +106141,36 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     exports.default = MainPage;
 
+    var OfflineBar = function OfflineBar(props) {
+        return React.createElement(
+            _reactNative.View,
+            {
+                style: styles.offlineBar,
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 44
+                }
+            },
+            React.createElement(
+                _reactNative.Text,
+                {
+                    __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 45
+                    }
+                },
+                " OFFLINE "
+            )
+        );
+    };
+
     var styles = _reactNative.StyleSheet.create({
         container: {
             flex: 1,
             backgroundColor: '#555',
             alignItems: 'center',
-            marginTop: _reactNative.StatusBar.currentHeight
+            marginTop: _reactNative.StatusBar.currentHeight,
+            paddingBottom: 50
         },
         topBar: {
             width: '100%',
@@ -106143,6 +106183,10 @@ __d(function (global, require, module, exports, _dependencyMap) {
             color: '#FFF',
             fontWeight: 'bold',
             fontSize: 20
+        },
+        offlineBar: {
+            backgroundColor: "#F00",
+            height: 50
         }
     });
 },794,[765,110,14,795,796,767,766],"typenativetut/components/MainPage/index.tsx");
@@ -106162,7 +106206,9 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     var _reactNative = require(_dependencyMap[2], "react-native");
 
-    var _reactRouterNative = require(_dependencyMap[3], "react-router-native");
+    var _HnItem = require(_dependencyMap[3], "../HnItem");
+
+    var _HnItem2 = _interopRequireDefault(_HnItem);
 
     var _store = require(_dependencyMap[4], "../../redux/store");
 
@@ -106235,6 +106281,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                     }
                 },
                 React.createElement(_reactNative.FlatList, {
+                    style: styles.list,
                     renderItem: this.renderListItem.bind(this),
                     data: this.props.data.hits,
                     keyExtractor: function keyExtractor(item, index) {
@@ -106249,37 +106296,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
         };
 
         _HnFrontPage.prototype.renderListItem = function (item) {
-            return React.createElement(
-                _reactRouterNative.Link,
-                {
-                    to: "/items/" + item.item.created_at_i,
-                    __source: {
-                        fileName: _jsxFileName,
-                        lineNumber: 41
-                    }
-                },
-                React.createElement(
-                    _reactNative.View,
-                    {
-                        style: styles.scrollParent,
-                        __source: {
-                            fileName: _jsxFileName,
-                            lineNumber: 42
-                        }
-                    },
-                    React.createElement(
-                        _reactNative.Text,
-                        {
-                            style: styles.textItem,
-                            __source: {
-                                fileName: _jsxFileName,
-                                lineNumber: 43
-                            }
-                        },
-                        item.item.title
-                    )
-                )
-            );
+            return React.createElement(_HnItem2.default, {
+                hit: item.item,
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 41
+                }
+            });
         };
 
         return _HnFrontPage;
@@ -106296,16 +106319,176 @@ __d(function (global, require, module, exports, _dependencyMap) {
         loadingView: {
             flex: 1,
             justifyContent: 'center'
-        }
+        },
+        list: {}
     });
 
     exports.default = (0, _reactRedux.connect)(mapStateToProps)(_HnFrontPage);
-},795,[765,110,14,766,821,888,797],"typenativetut/components/HnFrontPage/index.tsx");
+},795,[765,110,14,796,797,903,911],"typenativetut/components/HnFrontPage/index.tsx");
 __d(function (global, require, module, exports, _dependencyMap) {
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.rootReducer = undefined;
+    var _jsxFileName = "/home/danpena/typenativetut/components/HnItem/index.tsx";
+
+    var _tslib = require(_dependencyMap[0], "tslib");
+
+    var tslib_1 = _interopRequireWildcard(_tslib);
+
+    var _react = require(_dependencyMap[1], "react");
+
+    var React = _interopRequireWildcard(_react);
+
+    var _reactNative = require(_dependencyMap[2], "react-native");
+
+    var _store = require(_dependencyMap[3], "../../redux/store");
+
+    var _store2 = _interopRequireDefault(_store);
+
+    var _reactRouterRedux = require(_dependencyMap[4], "react-router-redux");
+
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+    var HnItem = function (_super) {
+        tslib_1.__extends(HnItem, _super);
+
+        function HnItem(props) {
+            return _super.call(this, props) || this;
+        }
+
+        HnItem.prototype.render = function () {
+            return React.createElement(
+                _reactNative.View,
+                {
+                    style: styles.container,
+                    __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 12
+                    }
+                },
+                React.createElement(
+                    _reactNative.Text,
+                    {
+                        style: styles.titleText,
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 13
+                        }
+                    },
+                    this.props.hit.title
+                ),
+                React.createElement(
+                    _reactNative.Text,
+                    {
+                        adjustsFontSizeToFit: true,
+                        style: styles.subText,
+                        numberOfLines: 1,
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 16
+                        }
+                    },
+                    this.props.hit.url
+                ),
+                React.createElement(
+                    _reactNative.Text,
+                    {
+                        style: styles.subText,
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 19
+                        }
+                    },
+                    React.createElement(
+                        _reactNative.Text,
+                        {
+                            style: {
+                                fontWeight: "bold"
+                            },
+                            __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 20
+                            }
+                        },
+                        " ",
+                        "Points: ",
+                        " "
+                    ),
+                    this.props.hit.points
+                ),
+                React.createElement(
+                    _reactNative.View,
+                    {
+                        style: styles.buttonsContainer,
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 23
+                        }
+                    },
+                    React.createElement(_reactNative.Button, {
+                        title: this.props.hit.num_comments + " Comments",
+                        onPress: this.onPress.bind(this),
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 24
+                        }
+                    }),
+                    React.createElement(_reactNative.Button, {
+                        title: "Article",
+                        onPress: this.onPress.bind(this),
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 25
+                        }
+                    })
+                )
+            );
+        };
+
+        HnItem.prototype.onPress = function () {
+            _store2.default.dispatch((0, _reactRouterRedux.push)("/items/" + this.props.hit.objectID));
+        };
+
+        return HnItem;
+    }(React.Component);
+
+    exports.default = HnItem;
+
+    var styles = _reactNative.StyleSheet.create({
+        titleText: {
+            color: '#000',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            paddingTop: 16,
+            paddingLeft: 16,
+            paddingRight: 16
+        },
+        subText: {
+            paddingLeft: 16
+        },
+        container: {
+            margin: 8,
+            backgroundColor: "blanchedalmond",
+            borderRadius: 10
+        },
+        buttonsContainer: {
+            flexDirection: 'row',
+            marginTop: 8,
+            marginBottom: 8,
+            paddingBottom: 8,
+            justifyContent: 'space-around',
+            alignItems: 'flex-start'
+        },
+        button: {}
+    });
+},796,[765,110,14,797,798],"typenativetut/components/HnItem/index.tsx");
+__d(function (global, require, module, exports, _dependencyMap) {
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.rootReducer = exports.history = undefined;
 
     var _reactRouterRedux = require(_dependencyMap[0], "react-router-redux");
 
@@ -106317,13 +106500,20 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     var _reducers = require(_dependencyMap[4], "./HnItems/reducers");
 
+    var _createMemoryHistory = require(_dependencyMap[5], "history/createMemoryHistory");
+
+    var _createMemoryHistory2 = _interopRequireDefault(_createMemoryHistory);
+
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var history = exports.history = (0, _createMemoryHistory2.default)();
     var rootReducer = exports.rootReducer = (0, _redux.combineReducers)({
         router: _reactRouterRedux.routerReducer,
         hnState: _reducers.hnReducer
     });
 
     function configureStore(initialState) {
-        var middlewares = [(0, _reduxObservable.createEpicMiddleware)(_rootEpic.rootEpic)];
+        var middlewares = [(0, _reduxObservable.createEpicMiddleware)(_rootEpic.rootEpic), (0, _reactRouterRedux.routerMiddleware)(history)];
 
         var enhancer = _redux.applyMiddleware.apply(void 0, middlewares);
 
@@ -106332,7 +106522,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     var store = configureStore();
     exports.default = store;
-},821,[822,806,827,881,882],"typenativetut/redux/store.tsx");
+},797,[798,803,812,866,910,770],"typenativetut/redux/store.tsx");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -106417,7 +106607,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   exports.syncHistoryWithStore = _sync2['default'];
   exports.routerMiddleware = _middleware2['default'];
-},822,[823,824,825,826],"react-router-redux/lib/index.js");
+},798,[799,800,801,802],"react-router-redux/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -106460,7 +106650,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     return state;
   }
-},823,[],"react-router-redux/lib/reducer.js");
+},799,[],"react-router-redux/lib/reducer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -106497,7 +106687,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     goBack: goBack,
     goForward: goForward
   };
-},824,[],"react-router-redux/lib/actions.js");
+},800,[],"react-router-redux/lib/actions.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -106634,7 +106824,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
     });
   }
-},825,[823],"react-router-redux/lib/sync.js");
+},801,[799],"react-router-redux/lib/sync.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -106673,7 +106863,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       };
     };
   }
-},826,[824],"react-router-redux/lib/middleware.js");
+},802,[800],"react-router-redux/lib/middleware.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -106721,7 +106911,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.bindActionCreators = _bindActionCreators2['default'];
   exports.applyMiddleware = _applyMiddleware2['default'];
   exports.compose = _compose2['default'];
-},806,[807,810,812,813,814,811],"redux/lib/index.js");
+},803,[804,807,809,810,811,808],"redux/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -106881,7 +107071,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       replaceReducer: replaceReducer
     }, _ref2[_symbolObservable2['default']] = observable, _ref2;
   }
-},807,[702,808],"redux/lib/createStore.js");
+},804,[702,805],"redux/lib/createStore.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -106915,7 +107105,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var result = (0, _ponyfill2['default'])(root);
   exports['default'] = result;
-},808,[809],"symbol-observable/lib/index.js");
+},805,[806],"symbol-observable/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
 	'use strict';
 
@@ -106943,7 +107133,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 	}
 
 	;
-},809,[],"symbol-observable/lib/ponyfill.js");
+},806,[],"symbol-observable/lib/ponyfill.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -107087,7 +107277,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       return hasChanged ? nextState : state;
     };
   }
-},810,[807,702,811],"redux/lib/combineReducers.js");
+},807,[804,702,808],"redux/lib/combineReducers.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -107103,7 +107293,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       throw new Error(message);
     } catch (e) {}
   }
-},811,[],"redux/lib/utils/warning.js");
+},808,[],"redux/lib/utils/warning.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -107139,7 +107329,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     return boundActionCreators;
   }
-},812,[],"redux/lib/bindActionCreators.js");
+},809,[],"redux/lib/bindActionCreators.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -107197,7 +107387,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       };
     };
   }
-},813,[814],"redux/lib/applyMiddleware.js");
+},810,[811],"redux/lib/applyMiddleware.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -107225,7 +107415,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       };
     });
   }
-},814,[],"redux/lib/compose.js");
+},811,[],"redux/lib/compose.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -107277,7 +107467,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       return _operators.ofType;
     }
   });
-},827,[828,858,876,874,871],"redux-observable/lib/cjs/index.js");
+},812,[813,843,861,859,856],"redux-observable/lib/cjs/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -107378,7 +107568,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     return epicMiddleware;
   }
-},828,[829,848,850,858,874,875],"redux-observable/lib/cjs/createEpicMiddleware.js");
+},813,[814,833,835,843,859,860],"redux-observable/lib/cjs/createEpicMiddleware.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -107587,7 +107777,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Subject);
 
     exports.AnonymousSubject = AnonymousSubject;
-},829,[830,833,835,846,847,842],"rxjs/Subject.js");
+},814,[815,818,820,831,832,827],"rxjs/Subject.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -107736,7 +107926,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }();
 
     exports.Observable = Observable;
-},830,[831,832,843,844],"rxjs/Observable.js");
+},815,[816,817,828,829],"rxjs/Observable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -107755,7 +107945,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             throw new Error('RxJS could not find any global context (window, self, global)');
         }
     })();
-},831,[],"rxjs/util/root.js");
+},816,[],"rxjs/util/root.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -107784,7 +107974,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.toSubscriber = toSubscriber;
-},832,[833,842,841],"rxjs/util/toSubscriber.js");
+},817,[818,827,826],"rxjs/util/toSubscriber.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108054,7 +108244,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
         return SafeSubscriber;
     }(Subscriber);
-},833,[834,835,841,842],"rxjs/Subscriber.js");
+},818,[819,820,826,827],"rxjs/Subscriber.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108063,7 +108253,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.isFunction = isFunction;
-},834,[],"rxjs/util/isFunction.js");
+},819,[],"rxjs/util/isFunction.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108239,14 +108429,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
             return errs.concat(err instanceof UnsubscriptionError_1.UnsubscriptionError ? err.errors : err);
         }, []);
     }
-},835,[836,837,834,838,839,840],"rxjs/Subscription.js");
+},820,[821,822,819,823,824,825],"rxjs/Subscription.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
   exports.isArray = Array.isArray || function (x) {
     return x && typeof x.length === 'number';
   };
-},836,[],"rxjs/util/isArray.js");
+},821,[],"rxjs/util/isArray.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108255,7 +108445,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.isObject = isObject;
-},837,[],"rxjs/util/isObject.js");
+},822,[],"rxjs/util/isObject.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108279,14 +108469,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     exports.tryCatch = tryCatch;
     ;
-},838,[839],"rxjs/util/tryCatch.js");
+},823,[824],"rxjs/util/tryCatch.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
   exports.errorObject = {
     e: {}
   };
-},839,[],"rxjs/util/errorObject.js");
+},824,[],"rxjs/util/errorObject.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108321,7 +108511,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Error);
 
     exports.UnsubscriptionError = UnsubscriptionError;
-},840,[],"rxjs/util/UnsubscriptionError.js");
+},825,[],"rxjs/util/UnsubscriptionError.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108333,7 +108523,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         },
         complete: function complete() {}
     };
-},841,[],"rxjs/Observer.js");
+},826,[],"rxjs/Observer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -108342,7 +108532,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var Symbol = root_1.root.Symbol;
   exports.rxSubscriber = typeof Symbol === 'function' && typeof (typeof Symbol === "function" ? Symbol.for : "@@for") === 'function' ? (typeof Symbol === "function" ? Symbol.for : "@@for")('rxSubscriber') : '@@rxSubscriber';
   exports.$$rxSubscriber = exports.rxSubscriber;
-},842,[831],"rxjs/symbol/rxSubscriber.js");
+},827,[816],"rxjs/symbol/rxSubscriber.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108369,7 +108559,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     exports.getSymbolObservable = getSymbolObservable;
     exports.observable = getSymbolObservable(root_1.root);
     exports.$$observable = exports.observable;
-},843,[831],"rxjs/symbol/observable.js");
+},828,[816],"rxjs/symbol/observable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108404,14 +108594,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.pipeFromArray = pipeFromArray;
-},844,[845],"rxjs/util/pipe.js");
+},829,[830],"rxjs/util/pipe.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
   function noop() {}
 
   exports.noop = noop;
-},845,[],"rxjs/util/noop.js");
+},830,[],"rxjs/util/noop.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108442,7 +108632,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Error);
 
     exports.ObjectUnsubscribedError = ObjectUnsubscribedError;
-},846,[],"rxjs/util/ObjectUnsubscribedError.js");
+},831,[],"rxjs/util/ObjectUnsubscribedError.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108496,7 +108686,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Subscription_1.Subscription);
 
     exports.SubjectSubscription = SubjectSubscription;
-},847,[835],"rxjs/SubjectSubscription.js");
+},832,[820],"rxjs/SubjectSubscription.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -108507,7 +108697,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.map = map;
-},848,[849],"rxjs/operator/map.js");
+},833,[834],"rxjs/operator/map.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108578,7 +108768,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
         return MapSubscriber;
     }(Subscriber_1.Subscriber);
-},849,[833],"rxjs/operators/map.js");
+},834,[818],"rxjs/operators/map.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -108589,7 +108779,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.switchMap = switchMap;
-},850,[851],"rxjs/operator/switchMap.js");
+},835,[836],"rxjs/operator/switchMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108709,7 +108899,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
         return SwitchMapSubscriber;
     }(OuterSubscriber_1.OuterSubscriber);
-},851,[852,853],"rxjs/operators/switchMap.js");
+},836,[837,838],"rxjs/operators/switchMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108750,7 +108940,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Subscriber_1.Subscriber);
 
     exports.OuterSubscriber = OuterSubscriber;
-},852,[833],"rxjs/OuterSubscriber.js");
+},837,[818],"rxjs/OuterSubscriber.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108843,14 +109033,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.subscribeToResult = subscribeToResult;
-},853,[831,854,855,837,830,856,857,843],"rxjs/util/subscribeToResult.js");
+},838,[816,839,840,822,815,841,842,828],"rxjs/util/subscribeToResult.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
   exports.isArrayLike = function (x) {
     return x && typeof x.length === 'number';
   };
-},854,[],"rxjs/util/isArrayLike.js");
+},839,[],"rxjs/util/isArrayLike.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108859,7 +109049,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.isPromise = isPromise;
-},855,[],"rxjs/util/isPromise.js");
+},840,[],"rxjs/util/isPromise.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108902,7 +109092,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     exports.symbolIteratorPonyfill = symbolIteratorPonyfill;
     exports.iterator = symbolIteratorPonyfill(root_1.root);
     exports.$$iterator = exports.iterator;
-},856,[831],"rxjs/symbol/iterator.js");
+},841,[816],"rxjs/symbol/iterator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -108950,7 +109140,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Subscriber_1.Subscriber);
 
     exports.InnerSubscriber = InnerSubscriber;
-},857,[833],"rxjs/InnerSubscriber.js");
+},842,[818],"rxjs/InnerSubscriber.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -109055,14 +109245,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     return ActionsObservable;
   }(_Observable2.Observable);
-},858,[830,859,864,871],"redux-observable/lib/cjs/ActionsObservable.js");
+},843,[815,844,849,856],"redux-observable/lib/cjs/ActionsObservable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
   var ArrayObservable_1 = require(_dependencyMap[0], './ArrayObservable');
 
   exports.of = ArrayObservable_1.ArrayObservable.of;
-},859,[860],"rxjs/observable/of.js");
+},844,[845],"rxjs/observable/of.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -109178,7 +109368,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Observable_1.Observable);
 
     exports.ArrayObservable = ArrayObservable;
-},860,[830,861,862,863],"rxjs/observable/ArrayObservable.js");
+},845,[815,846,847,848],"rxjs/observable/ArrayObservable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -109258,7 +109448,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Observable_1.Observable);
 
     exports.ScalarObservable = ScalarObservable;
-},861,[830],"rxjs/observable/ScalarObservable.js");
+},846,[815],"rxjs/observable/ScalarObservable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -109310,7 +109500,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Observable_1.Observable);
 
     exports.EmptyObservable = EmptyObservable;
-},862,[830],"rxjs/observable/EmptyObservable.js");
+},847,[815],"rxjs/observable/EmptyObservable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -109319,14 +109509,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.isScheduler = isScheduler;
-},863,[],"rxjs/util/isScheduler.js");
+},848,[],"rxjs/util/isScheduler.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
   var FromObservable_1 = require(_dependencyMap[0], './FromObservable');
 
   exports.from = FromObservable_1.FromObservable.create;
-},864,[865],"rxjs/observable/from.js");
+},849,[850],"rxjs/observable/from.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -109411,7 +109601,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Observable_1.Observable);
 
     exports.FromObservable = FromObservable;
-},865,[836,854,855,866,867,860,868,856,830,869,843],"rxjs/observable/FromObservable.js");
+},850,[821,839,840,851,852,845,853,841,815,854,828],"rxjs/observable/FromObservable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -109534,7 +109724,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             subscriber.error(err);
         }
     }
-},866,[831,830],"rxjs/observable/PromiseObservable.js");
+},851,[816,815],"rxjs/observable/PromiseObservable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -109772,7 +109962,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
         return valueAsNumber < 0 ? -1 : 1;
     }
-},867,[831,830,856],"rxjs/observable/IteratorObservable.js");
+},852,[816,815,841],"rxjs/observable/IteratorObservable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -109870,7 +110060,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Observable_1.Observable);
 
     exports.ArrayLikeObservable = ArrayLikeObservable;
-},868,[830,861,862],"rxjs/observable/ArrayLikeObservable.js");
+},853,[815,846,847],"rxjs/observable/ArrayLikeObservable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -109973,7 +110163,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }();
 
     exports.ObserveOnMessage = ObserveOnMessage;
-},869,[833,870],"rxjs/operators/observeOn.js");
+},854,[818,855],"rxjs/operators/observeOn.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110062,7 +110252,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }();
 
     exports.Notification = Notification;
-},870,[830],"rxjs/Notification.js");
+},855,[815],"rxjs/Notification.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -110101,7 +110291,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       });
     };
   }
-},871,[872],"redux-observable/lib/cjs/operators.js");
+},856,[857],"redux-observable/lib/cjs/operators.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110112,7 +110302,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.filter = filter;
-},872,[873],"rxjs/operator/filter.js");
+},857,[858],"rxjs/operator/filter.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110179,7 +110369,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
         return FilterSubscriber;
     }(Subscriber_1.Subscriber);
-},873,[833],"rxjs/operators/filter.js");
+},858,[818],"rxjs/operators/filter.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -110187,7 +110377,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     value: true
   });
   var EPIC_END = exports.EPIC_END = '@@redux-observable/EPIC_END';
-},874,[],"redux-observable/lib/cjs/EPIC_END.js");
+},859,[],"redux-observable/lib/cjs/EPIC_END.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -110208,7 +110398,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       console.warn('redux-observable | DEPRECATION: ' + msg);
     }
   } : function () {};
-},875,[],"redux-observable/lib/cjs/utils/console.js");
+},860,[],"redux-observable/lib/cjs/utils/console.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -110252,7 +110442,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       })));
     };
   };
-},876,[877],"redux-observable/lib/cjs/combineEpics.js");
+},861,[862],"redux-observable/lib/cjs/combineEpics.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110293,7 +110483,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.merge = merge;
-},877,[830,860,863,878],"rxjs/observable/merge.js");
+},862,[815,845,848,863],"rxjs/observable/merge.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110310,7 +110500,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.mergeAll = mergeAll;
-},878,[879,880],"rxjs/operators/mergeAll.js");
+},863,[864,865],"rxjs/operators/mergeAll.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110459,7 +110649,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(OuterSubscriber_1.OuterSubscriber);
 
     exports.MergeMapSubscriber = MergeMapSubscriber;
-},879,[853,852],"rxjs/operators/mergeMap.js");
+},864,[838,837],"rxjs/operators/mergeMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110468,7 +110658,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.identity = identity;
-},880,[],"rxjs/util/identity.js");
+},865,[],"rxjs/util/identity.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     Object.defineProperty(exports, "__esModule", {
         value: true
@@ -110480,7 +110670,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     var _epics = require(_dependencyMap[1], "./HnItems/epics");
 
     var rootEpic = exports.rootEpic = (0, _reduxObservable.combineEpics)(_epics.hnEpics);
-},881,[827,891],"typenativetut/redux/root-epic.tsx");
+},866,[812,867],"typenativetut/redux/root-epic.tsx");
 __d(function (global, require, module, exports, _dependencyMap) {
     Object.defineProperty(exports, "__esModule", {
         value: true
@@ -110501,7 +110691,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     var fetchHnApiEpic$ = function fetchHnApiEpic$(action$, store) {
         return action$.filter((0, _typesafeActions.isActionOf)(_actions.hnActions.fetchFrontPage)).concatMap(function (action) {
-            return _Observable.Observable.fromPromise(fetchCall());
+            return _Observable.Observable.fromPromise(getHnFrontPage());
         }).concatMap(function (response) {
             return _Observable.Observable.of(_actions.hnActions.gotFrontPage(response));
         });
@@ -110527,14 +110717,20 @@ __d(function (global, require, module, exports, _dependencyMap) {
         });
     }
 
-    function fetchCall() {
+    function getHnFrontPage() {
         return fetch("https://hn.algolia.com/api/v1/search?tags=front_page").then(function (response) {
             return response.json();
         });
     }
 
+    function getCommentsForStory(storyId) {
+        return fetch("http://hn.algolia.com/api/v1/search?tags=comment,story_" + storyId).then(function (response) {
+            return response.json();
+        });
+    }
+
     var hnEpics = exports.hnEpics = (0, _reduxObservable.combineEpics)(fetchHnApiEpic$, fetchHnApiFromStorage$);
-},891,[827,892,888,883,830,14],"typenativetut/redux/HnItems/epics.tsx");
+},867,[812,868,903,904,815,14],"typenativetut/redux/HnItems/epics.tsx");
 __d(function (global, require, module, exports, _dependencyMap) {
   require(_dependencyMap[0], "rxjs/add/observable/of");
 
@@ -110557,7 +110753,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   require(_dependencyMap[9], "rxjs/add/operator/do");
 
   require(_dependencyMap[10], "rxjs/add/operator/ignoreElements");
-},892,[893,894,896,901,904,913,914,915,918,921,924],"typenativetut/rxjs-imports.ts");
+},868,[869,870,872,877,880,889,890,891,894,897,900],"typenativetut/rxjs-imports.ts");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110566,7 +110762,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var of_1 = require(_dependencyMap[1], '../../observable/of');
 
   Observable_1.Observable.of = of_1.of;
-},893,[830,859],"rxjs/add/observable/of.js");
+},869,[815,844],"rxjs/add/observable/of.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110575,14 +110771,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var fromPromise_1 = require(_dependencyMap[1], '../../observable/fromPromise');
 
   Observable_1.Observable.fromPromise = fromPromise_1.fromPromise;
-},894,[830,895],"rxjs/add/observable/fromPromise.js");
+},870,[815,871],"rxjs/add/observable/fromPromise.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
   var PromiseObservable_1 = require(_dependencyMap[0], './PromiseObservable');
 
   exports.fromPromise = PromiseObservable_1.PromiseObservable.create;
-},895,[866],"rxjs/observable/fromPromise.js");
+},871,[851],"rxjs/observable/fromPromise.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110591,7 +110787,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var concat_1 = require(_dependencyMap[1], '../../operator/concat');
 
   Observable_1.Observable.prototype.concat = concat_1.concat;
-},896,[830,897],"rxjs/add/operator/concat.js");
+},872,[815,873],"rxjs/add/operator/concat.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110612,7 +110808,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.concat = concat;
-},897,[898,899],"rxjs/operator/concat.js");
+},873,[874,875],"rxjs/operator/concat.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110635,7 +110831,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.concat = concat;
-},898,[899],"rxjs/operators/concat.js");
+},874,[875],"rxjs/operators/concat.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110662,7 +110858,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.concat = concat;
-},899,[863,859,864,900],"rxjs/observable/concat.js");
+},875,[848,844,849,876],"rxjs/observable/concat.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110673,7 +110869,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.concatAll = concatAll;
-},900,[878],"rxjs/operators/concatAll.js");
+},876,[863],"rxjs/operators/concatAll.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110682,7 +110878,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var concatMap_1 = require(_dependencyMap[1], '../../operator/concatMap');
 
   Observable_1.Observable.prototype.concatMap = concatMap_1.concatMap;
-},901,[830,902],"rxjs/add/operator/concatMap.js");
+},877,[815,878],"rxjs/add/operator/concatMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110693,7 +110889,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.concatMap = concatMap;
-},902,[903],"rxjs/operator/concatMap.js");
+},878,[879],"rxjs/operator/concatMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110704,7 +110900,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.concatMap = concatMap;
-},903,[879],"rxjs/operators/concatMap.js");
+},879,[864],"rxjs/operators/concatMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110713,7 +110909,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var delay_1 = require(_dependencyMap[1], '../../operator/delay');
 
   Observable_1.Observable.prototype.delay = delay_1.delay;
-},904,[830,905],"rxjs/add/operator/delay.js");
+},880,[815,881],"rxjs/add/operator/delay.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110730,7 +110926,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.delay = delay;
-},905,[906,911],"rxjs/operator/delay.js");
+},881,[882,887],"rxjs/operator/delay.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -110739,7 +110935,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var AsyncScheduler_1 = require(_dependencyMap[1], './AsyncScheduler');
 
   exports.async = new AsyncScheduler_1.AsyncScheduler(AsyncAction_1.AsyncAction);
-},906,[907,909],"rxjs/scheduler/async.js");
+},882,[883,885],"rxjs/scheduler/async.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110871,7 +111067,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Action_1.Action);
 
     exports.AsyncAction = AsyncAction;
-},907,[831,908],"rxjs/scheduler/AsyncAction.js");
+},883,[816,884],"rxjs/scheduler/AsyncAction.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110908,7 +111104,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Subscription_1.Subscription);
 
     exports.Action = Action;
-},908,[835],"rxjs/scheduler/Action.js");
+},884,[820],"rxjs/scheduler/Action.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110969,7 +111165,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }(Scheduler_1.Scheduler);
 
     exports.AsyncScheduler = AsyncScheduler;
-},909,[910],"rxjs/scheduler/AsyncScheduler.js");
+},885,[886],"rxjs/scheduler/AsyncScheduler.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -110998,7 +111194,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }();
 
     exports.Scheduler = Scheduler;
-},910,[],"rxjs/Scheduler.js");
+},886,[],"rxjs/Scheduler.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -111128,7 +111324,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
         return DelayMessage;
     }();
-},911,[906,912,833,870],"rxjs/operators/delay.js");
+},887,[882,888,818,855],"rxjs/operators/delay.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -111137,7 +111333,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.isDate = isDate;
-},912,[],"rxjs/util/isDate.js");
+},888,[],"rxjs/util/isDate.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -111146,7 +111342,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var filter_1 = require(_dependencyMap[1], '../../operator/filter');
 
   Observable_1.Observable.prototype.filter = filter_1.filter;
-},913,[830,872],"rxjs/add/operator/filter.js");
+},889,[815,857],"rxjs/add/operator/filter.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -111155,7 +111351,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var map_1 = require(_dependencyMap[1], '../../operator/map');
 
   Observable_1.Observable.prototype.map = map_1.map;
-},914,[830,848],"rxjs/add/operator/map.js");
+},890,[815,833],"rxjs/add/operator/map.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -111164,7 +111360,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var merge_1 = require(_dependencyMap[1], '../../operator/merge');
 
   Observable_1.Observable.prototype.merge = merge_1.merge;
-},915,[830,916],"rxjs/add/operator/merge.js");
+},891,[815,892],"rxjs/add/operator/merge.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -111185,7 +111381,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.merge = merge;
-},916,[917,877],"rxjs/operator/merge.js");
+},892,[893,862],"rxjs/operator/merge.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -111208,7 +111404,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.merge = merge;
-},917,[877],"rxjs/operators/merge.js");
+},893,[862],"rxjs/operators/merge.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -111217,7 +111413,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var debounceTime_1 = require(_dependencyMap[1], '../../operator/debounceTime');
 
   Observable_1.Observable.prototype.debounceTime = debounceTime_1.debounceTime;
-},918,[830,919],"rxjs/add/operator/debounceTime.js");
+},894,[815,895],"rxjs/add/operator/debounceTime.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -111234,7 +111430,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.debounceTime = debounceTime;
-},919,[906,920],"rxjs/operator/debounceTime.js");
+},895,[882,896],"rxjs/operator/debounceTime.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -111330,7 +111526,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     function dispatchNext(subscriber) {
         subscriber.debouncedNext();
     }
-},920,[833,906],"rxjs/operators/debounceTime.js");
+},896,[818,882],"rxjs/operators/debounceTime.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -111340,7 +111536,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   Observable_1.Observable.prototype.do = do_1._do;
   Observable_1.Observable.prototype._do = do_1._do;
-},921,[830,922],"rxjs/add/operator/do.js");
+},897,[815,898],"rxjs/add/operator/do.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -111351,7 +111547,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports._do = _do;
-},922,[923],"rxjs/operator/do.js");
+},898,[899],"rxjs/operator/do.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -111438,7 +111634,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
         return DoSubscriber;
     }(Subscriber_1.Subscriber);
-},923,[833],"rxjs/operators/tap.js");
+},899,[818],"rxjs/operators/tap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -111447,7 +111643,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var ignoreElements_1 = require(_dependencyMap[1], '../../operator/ignoreElements');
 
   Observable_1.Observable.prototype.ignoreElements = ignoreElements_1.ignoreElements;
-},924,[830,925],"rxjs/add/operator/ignoreElements.js");
+},900,[815,901],"rxjs/add/operator/ignoreElements.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -111459,7 +111655,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   exports.ignoreElements = ignoreElements;
   ;
-},925,[926],"rxjs/operator/ignoreElements.js");
+},901,[902],"rxjs/operator/ignoreElements.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -111510,7 +111706,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
         return IgnoreElementsSubscriber;
     }(Subscriber_1.Subscriber);
-},926,[833,845],"rxjs/operators/ignoreElements.js");
+},902,[818,830],"rxjs/operators/ignoreElements.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     Object.defineProperty(exports, "__esModule", {
         value: true
@@ -111528,9 +111724,21 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 type: _types.GOT_FRONT_PAGE,
                 payload: json
             };
+        }),
+        fetchCommentsForStory: (0, _typesafeActions.createAction)(_types.FETCH_COMMENTS_FOR_STORY, function (storyId) {
+            return {
+                type: _types.FETCH_COMMENTS_FOR_STORY,
+                payload: storyId
+            };
+        }),
+        gotCommentsForStory: (0, _typesafeActions.createAction)(_types.GOT_COMMENTS_FOR_STORY, function (data) {
+            return {
+                type: _types.GOT_COMMENTS_FOR_STORY,
+                payload: data
+            };
         })
     };
-},888,[883,889],"typenativetut/redux/HnItems/actions.tsx");
+},903,[904,909],"typenativetut/redux/HnItems/actions.tsx");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -111547,7 +111755,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   tslib_1.__exportStar(require(_dependencyMap[3], "./is-action-of"), exports);
 
   tslib_1.__exportStar(require(_dependencyMap[4], "./create-action"), exports);
-},883,[765,884,885,886,887],"typesafe-actions/es5-commonjs/index.js");
+},904,[765,905,906,907,908],"typesafe-actions/es5-commonjs/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -111561,7 +111769,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     exports.getReturnOfExpression = getReturnOfExpression;
     exports.returntypeof = getReturnOfExpression;
-},884,[],"typesafe-actions/es5-commonjs/type-utils.js");
+},905,[],"typesafe-actions/es5-commonjs/type-utils.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -111582,7 +111790,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.getType = getType;
-},885,[],"typesafe-actions/es5-commonjs/get-type.js");
+},906,[],"typesafe-actions/es5-commonjs/get-type.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -111614,7 +111822,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.isActionOf = isActionOf;
-},886,[],"typesafe-actions/es5-commonjs/is-action-of.js");
+},907,[],"typesafe-actions/es5-commonjs/is-action-of.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -111655,14 +111863,16 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     exports.createAction = createAction;
-},887,[],"typesafe-actions/es5-commonjs/create-action.js");
+},908,[],"typesafe-actions/es5-commonjs/create-action.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   var FETCH_FRONT_PAGE = exports.FETCH_FRONT_PAGE = "@@HnItems/FetchFrontPage";
   var GOT_FRONT_PAGE = exports.GOT_FRONT_PAGE = "@@HnItems/GetFrontPage";
-},889,[],"typenativetut/redux/HnItems/types.tsx");
+  var FETCH_COMMENTS_FOR_STORY = exports.FETCH_COMMENTS_FOR_STORY = "@@HnItems/FetchCommentsForStory";
+  var GOT_COMMENTS_FOR_STORY = exports.GOT_COMMENTS_FOR_STORY = "@@HnItems/GotCommentsForStory";
+},909,[],"typenativetut/redux/HnItems/types.tsx");
 __d(function (global, require, module, exports, _dependencyMap) {
     Object.defineProperty(exports, "__esModule", {
         value: true
@@ -111709,53 +111919,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             }
         }
     });
-},882,[883,888,806,889],"typenativetut/redux/HnItems/reducers.tsx");
-__d(function (global, require, module, exports, _dependencyMap) {
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    var _jsxFileName = "/home/danpena/typenativetut/components/HnItem/index.tsx";
-
-    var _tslib = require(_dependencyMap[0], "tslib");
-
-    var tslib_1 = _interopRequireWildcard(_tslib);
-
-    var _react = require(_dependencyMap[1], "react");
-
-    var React = _interopRequireWildcard(_react);
-
-    var _reactNative = require(_dependencyMap[2], "react-native");
-
-    function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-    var HnItem = function (_super) {
-        tslib_1.__extends(HnItem, _super);
-
-        function HnItem(props) {
-            return _super.call(this, props) || this;
-        }
-
-        HnItem.prototype.render = function () {
-            return React.createElement(
-                _reactNative.Text,
-                {
-                    style: {
-                        padding: 20
-                    },
-                    __source: {
-                        fileName: _jsxFileName,
-                        lineNumber: 10
-                    }
-                },
-                this.props.title
-            );
-        };
-
-        return HnItem;
-    }(React.Component);
-
-    exports.default = HnItem;
-},796,[765,110,14],"typenativetut/components/HnItem/index.tsx");
+},910,[904,903,803,909],"typenativetut/redux/HnItems/reducers.tsx");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -111784,7 +111948,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.createProvider = _Provider.createProvider;
   exports.connectAdvanced = _connectAdvanced2.default;
   exports.connect = _connect2.default;
-},797,[798,801,803],"react-redux/lib/index.js");
+},911,[912,915,917],"react-redux/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -111899,7 +112063,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.default = createProvider();
-},798,[110,129,799,800],"react-redux/lib/components/Provider.js");
+},912,[110,129,913,914],"react-redux/lib/components/Provider.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -111928,7 +112092,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     dispatch: _propTypes2.default.func.isRequired,
     getState: _propTypes2.default.func.isRequired
   });
-},799,[129],"react-redux/lib/utils/PropTypes.js");
+},913,[129],"react-redux/lib/utils/PropTypes.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -111944,7 +112108,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       throw new Error(message);
     } catch (e) {}
   }
-},800,[],"react-redux/lib/utils/warning.js");
+},914,[],"react-redux/lib/utils/warning.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -112252,7 +112416,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       return (0, _hoistNonReactStatics2.default)(Connect, WrappedComponent);
     };
   }
-},801,[652,499,110,802,799],"react-redux/lib/components/connectAdvanced.js");
+},915,[652,499,110,916,913],"react-redux/lib/components/connectAdvanced.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -112345,7 +112509,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }();
 
   exports.default = Subscription;
-},802,[],"react-redux/lib/utils/Subscription.js");
+},916,[],"react-redux/lib/utils/Subscription.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -112473,7 +112637,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.default = createConnect();
-},803,[801,804,805,817,818,819],"react-redux/lib/connect/connect.js");
+},917,[915,918,919,922,923,924],"react-redux/lib/connect/connect.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -112508,7 +112672,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     return true;
   }
-},804,[],"react-redux/lib/utils/shallowEqual.js");
+},918,[],"react-redux/lib/utils/shallowEqual.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -112540,7 +112704,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.default = [whenMapDispatchToPropsIsFunction, whenMapDispatchToPropsIsMissing, whenMapDispatchToPropsIsObject];
-},805,[806,815],"react-redux/lib/connect/mapDispatchToProps.js");
+},919,[803,920],"react-redux/lib/connect/mapDispatchToProps.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -112604,7 +112768,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       return proxy;
     };
   }
-},815,[816],"react-redux/lib/connect/wrapMapToProps.js");
+},920,[921],"react-redux/lib/connect/wrapMapToProps.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -112630,7 +112794,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       (0, _warning2.default)(methodName + '() in ' + displayName + ' must return a plain object. Instead received ' + value + '.');
     }
   }
-},816,[702,800],"react-redux/lib/utils/verifyPlainObject.js");
+},921,[702,914],"react-redux/lib/utils/verifyPlainObject.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -112651,7 +112815,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.default = [whenMapStateToPropsIsFunction, whenMapStateToPropsIsMissing];
-},817,[815],"react-redux/lib/connect/mapStateToProps.js");
+},922,[920],"react-redux/lib/connect/mapStateToProps.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -112724,7 +112888,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.default = [whenMergePropsIsFunction, whenMergePropsIsOmitted];
-},818,[816],"react-redux/lib/connect/mergeProps.js");
+},923,[921],"react-redux/lib/connect/mergeProps.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -112837,7 +113001,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     var selectorFactory = options.pure ? pureFinalPropsSelectorFactory : impureFinalPropsSelectorFactory;
     return selectorFactory(mapStateToProps, mapDispatchToProps, mergeProps, dispatch, options);
   }
-},819,[820],"react-redux/lib/connect/selectorFactory.js");
+},924,[925],"react-redux/lib/connect/selectorFactory.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -112869,7 +113033,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     verify(mapDispatchToProps, 'mapDispatchToProps', displayName);
     verify(mergeProps, 'mergeProps', displayName);
   }
-},820,[800],"react-redux/lib/connect/verifySubselectors.js");
+},925,[914],"react-redux/lib/connect/verifySubselectors.js");
 require(25);
 require(11);
 //# sourceMappingURL=crna-entry.map

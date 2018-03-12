@@ -9,7 +9,7 @@ import { AsyncStorage } from 'react-native'
 
 const fetchHnApiEpic$: Epic<RootAction, RootState> = (action$, store) => action$
     .filter(isActionOf(hnActions.fetchFrontPage))
-    .concatMap(action => Observable.fromPromise(fetchCall()))
+    .concatMap(action => Observable.fromPromise(getHnFrontPage()))
     .concatMap((response) => Observable.of(hnActions.gotFrontPage(response)))
 
 const fetchHnApiFromStorage$: Epic<RootAction, RootState> = (action$, store) => action$
@@ -27,8 +27,14 @@ function getFromAsyncStorage(): Promise<JSON> {
         .then(item => JSON.parse(item))
 }
 
-function fetchCall(): Promise<JSON> {
+function getHnFrontPage(): Promise<JSON> {
     return fetch("https://hn.algolia.com/api/v1/search?tags=front_page")
+        .then(response => response.json())
+}
+
+
+function getCommentsForStory(storyId: string): Promise<JSON> {
+    return fetch("http://hn.algolia.com/api/v1/search?tags=comment,story_" + storyId)
         .then(response => response.json())
 }
 

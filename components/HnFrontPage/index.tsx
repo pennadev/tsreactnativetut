@@ -5,22 +5,58 @@ import HnItem from "../HnItem"
 import store, { RootState } from '../../redux/store';
 import { hnActions } from '../../redux/HnItems/actions';
 import { connect } from 'react-redux';
+import { HnState } from '../../redux/HnItems/reducers';
 
-interface State {
+export interface HnProps {
     isLoading: Boolean;
     data: any;
 }
-
-interface Hits {
-    title: string
-    created_at_i: number
+export interface Title {
+    value: string;
+    matchLevel: string;
+    matchedWords: any[];
 }
 
-interface JSONResponse {
-    hits: Hits[]
+export interface Url {
+    value: string;
+    matchLevel: string;
+    matchedWords: any[];
 }
 
-function mapStateToProps(state: RootState) {
+export interface Author {
+    value: string;
+    matchLevel: string;
+    matchedWords: any[];
+}
+
+export interface HighlightResult {
+    title: Title;
+    url: Url;
+    author: Author;
+}
+
+export interface Hit {
+    created_at: Date;
+    title: string;
+    url: string;
+    author: string;
+    points: number;
+    story_text?: any;
+    comment_text?: any;
+    num_comments: number;
+    story_id?: any;
+    story_title?: any;
+    story_url?: any;
+    parent_id?: any;
+    created_at_i: number;
+    objectID: string;
+}
+
+export interface JSONResponse {
+    hits: Hit[]
+}
+
+function mapStateToProps(state: RootState): HnProps {
     return {
         isLoading: state.hnState.isFetching,
         data: state.hnState.data
@@ -28,7 +64,7 @@ function mapStateToProps(state: RootState) {
 }
 
 
-class _HnFrontPage extends React.Component<{ isLoading: boolean; data: any; }> {
+class _HnFrontPage extends React.Component<HnProps> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -44,7 +80,7 @@ class _HnFrontPage extends React.Component<{ isLoading: boolean; data: any; }> {
 
         store.dispatch(hnActions.fetchFrontPage())
     }
-
+    
     render() {
         if (this.props.isLoading) {
             return (
@@ -57,6 +93,7 @@ class _HnFrontPage extends React.Component<{ isLoading: boolean; data: any; }> {
         return (
             <View>
                 <FlatList
+                    style={styles.list}
                     renderItem={this.renderListItem.bind(this)}
                     data={this.props.data.hits}
                     keyExtractor={(item, index) => index.toString()}
@@ -67,13 +104,7 @@ class _HnFrontPage extends React.Component<{ isLoading: boolean; data: any; }> {
 
     renderListItem(item: any) {
         return (
-            <Link to={"/items/" + item.item.created_at_i}>
-                <View style={styles.scrollParent}>
-                    <Text style={styles.textItem}>
-                        {item.item.title}
-                    </Text>
-                </View>
-            </Link>
+                <HnItem hit={item.item} />
         )
     }
 }
@@ -83,16 +114,16 @@ const styles = StyleSheet.create({
         padding: 10,
         color: '#FFF',
     },
-
     scrollParent: {
         flexDirection: 'row'
     },
-
     loadingView: {
         flex: 1,
         justifyContent: 'center'
     },
-
+    list:{
+        
+    }
 });
 
 export default connect(mapStateToProps)(_HnFrontPage)

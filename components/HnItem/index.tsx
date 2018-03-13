@@ -1,19 +1,18 @@
 import * as React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-import { Link } from 'react-router-native';
+import { View, Text, StyleSheet, Button, Linking } from "react-native";
 import store from '../../redux/store';
-import { push } from 'react-router-redux';
 import { Hit } from '../HnFrontPage';
 
 interface ItemProps {
-    hit: Hit
+    hit: Hit,
+    onCommentClick: () => {}
 }
 
 export default class HnItem extends React.Component<ItemProps, {}> {
     constructor(props: ItemProps) {
         super(props)
     }
-    
+
     render() {
         return (
             <View style={styles.container}>
@@ -21,26 +20,21 @@ export default class HnItem extends React.Component<ItemProps, {}> {
                     {this.props.hit.title}
                 </Text>
                 <Text
-                    adjustsFontSizeToFit
                     style={styles.subText}
-                    numberOfLines={1}>
+                    onPress={() => {Linking.openURL(this.props.hit.url) }}>
                     {this.props.hit.url}
                 </Text>
                 <Text style={styles.subText}>
-                    <Text style={{ fontWeight: "bold" }}> {"Points: "} </Text>
-                    {this.props.hit.points}
+                    <Text style={{ fontWeight: "bold" }}>
+                        {"Points: " + this.props.hit.points}
+                    </Text>
                 </Text>
                 <View style={styles.buttonsContainer}>
                     <Button title={this.props.hit.num_comments + " Comments"}
-                        onPress={this.onPress.bind(this)} />
-                    <Button title={"Article"} onPress={this.onPress.bind(this)} />
+                        onPress={this.props.onCommentClick} />
                 </View>
             </View>
         )
-    }
-    
-    onPress() {
-        store.dispatch(push("/items/" + this.props.hit.objectID))
     }
 }
 
@@ -50,12 +44,14 @@ const styles = StyleSheet.create({
         color: '#000',
         fontWeight: 'bold',
         textAlign: 'center',
+        fontSize: 16,
         paddingTop: 16,
+        paddingBottom: 8,
         paddingLeft: 16,
         paddingRight: 16,
     },
     subText: {
-        paddingLeft: 16
+        marginLeft: 16
     },
     container: {
         margin: 8,
@@ -67,10 +63,11 @@ const styles = StyleSheet.create({
         marginTop: 8,
         marginBottom: 8,
         paddingBottom: 8,
-        justifyContent: 'space-around',
+        marginLeft: 16,
         alignItems: 'flex-start'
     },
     button: {
 
     }
 })
+

@@ -1,16 +1,18 @@
 import * as React from 'react'
 import { View, ScrollView, ActivityIndicator, Text, StyleSheet, FlatList } from 'react-native';
-import { Link, Route } from 'react-router-native'
 import HnItem from "../HnItem"
 import store, { RootState } from '../../redux/store';
 import { hnActions } from '../../redux/HnItems/actions';
 import { connect } from 'react-redux';
 import { HnState } from '../../redux/HnItems/reducers';
+import { withNavigation } from 'react-navigation';
 
 export interface HnProps {
     isLoading: Boolean;
     data: any;
 }
+
+
 export interface Title {
     value: string;
     matchLevel: string;
@@ -34,6 +36,7 @@ export interface HighlightResult {
     url: Url;
     author: Author;
 }
+
 
 export interface Hit {
     created_at: Date;
@@ -64,7 +67,7 @@ function mapStateToProps(state: RootState): HnProps {
 }
 
 
-class _HnFrontPage extends React.Component<HnProps> {
+class _HnFrontPage extends React.Component<HnProps, {}> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -72,7 +75,7 @@ class _HnFrontPage extends React.Component<HnProps> {
             data: {} as JSONResponse
         }
     }
-
+    
     componentDidMount() {
         store.subscribe(() => {
             console.log(store.getState())
@@ -80,7 +83,7 @@ class _HnFrontPage extends React.Component<HnProps> {
 
         store.dispatch(hnActions.fetchFrontPage())
     }
-    
+
     render() {
         if (this.props.isLoading) {
             return (
@@ -104,8 +107,15 @@ class _HnFrontPage extends React.Component<HnProps> {
 
     renderListItem(item: any) {
         return (
-                <HnItem hit={item.item} />
+            <HnItem
+                hit={item.item}
+                onCommentClick={this.onCommentClick.bind(this)}
+            />
         )
+    }
+
+    onCommentClick() {
+        this.props.navigation.navigate('HnComments')
     }
 }
 
@@ -121,9 +131,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center'
     },
-    list:{
-        
+    list: {
+
     }
 });
 
-export default connect(mapStateToProps)(_HnFrontPage)
+export default withNavigation(connect<{}, {}, {}>(mapStateToProps)(_HnFrontPage))

@@ -1,5 +1,6 @@
 {
   "expo": {
+    "icon": "./logo.png",
     "sdkVersion": "25.0.0",
     "packagerOpts": {
       "sourceExts": [
@@ -9,6 +10,12 @@
       "transformer": "node_modules/react-native-typescript-transformer/index.js"
     },
     "slug": "typenativetut",
-    "name": "typenativetut"
+    "name": "typenativetut",
+    "android": {
+      "package": "com.penna.hnreader"
+    },
+    "ios": {
+      "bundleIdentifier": "com.penna.hnreader"
+    }
   }
 }

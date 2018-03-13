@@ -21,13 +21,12 @@ export default class HnItem extends React.Component<ItemProps, {}> {
                 </Text>
                 <Text
                     style={styles.subText}
-                    onPress={() => {Linking.openURL(this.props.hit.url) }}>
+                    onPress={() => { Linking.openURL(this.props.hit.url) }}>
                     {this.props.hit.url}
                 </Text>
                 <Text style={styles.subText}>
-                    <Text style={{ fontWeight: "bold" }}>
-                        {"Points: " + this.props.hit.points}
-                    </Text>
+                    <Text style={{ fontWeight: "bold" }}>Points: </Text>
+                    <Text>{this.props.hit.points}</Text>
                 </Text>
                 <View style={styles.buttonsContainer}>
                     <Button title={this.props.hit.num_comments + " Comments"}

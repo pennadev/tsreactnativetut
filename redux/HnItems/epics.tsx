@@ -18,6 +18,13 @@ const fetchHnApiFromStorage$: Epic<RootAction, RootState> = (action$, store) => 
     .filter(v => (v !== null))
     .concatMap(v => Observable.of(hnActions.gotFrontPage(v)))
 
+const fetchCommentsEpic$: Epic<RootAction, RootState> = (action$, store) => action$
+    .filter(isActionOf(hnActions.fetchCommentsForStory))
+    .concatMap((action: RootAction) => Observable.fromPromise(getCommentsForStory(action.payload)))
+    .do((response) => console.log(response))
+    .concatMap((response: JSON) => Observable.of(hnActions.gotCommentsForStory(response)) )
+
+
 function saveToAsyncStorage(obj: JSON) {
     return AsyncStorage.setItem("@hnApi", JSON.stringify(obj))
 }
@@ -30,6 +37,7 @@ function getFromAsyncStorage(): Promise<JSON> {
 function getHnFrontPage(): Promise<JSON> {
     return fetch("https://hn.algolia.com/api/v1/search?tags=front_page")
         .then(response => response.json())
+        .catch((error) => console.log(error))
 }
 
 
@@ -38,4 +46,4 @@ function getCommentsForStory(storyId: string): Promise<JSON> {
         .then(response => response.json())
 }
 
-export const hnEpics = combineEpics(fetchHnApiEpic$, fetchHnApiFromStorage$)
+export const hnEpics = combineEpics(fetchHnApiEpic$, fetchCommentsEpic$)

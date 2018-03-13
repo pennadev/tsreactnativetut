@@ -5,13 +5,14 @@ import store, { RootState } from '../../redux/store';
 import { hnActions } from '../../redux/HnItems/actions';
 import { connect } from 'react-redux';
 import { HnState } from '../../redux/HnItems/reducers';
-import { withNavigation } from 'react-navigation';
+import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 
 export interface HnProps {
     isLoading: Boolean;
     data: any;
-}
+} 
 
+type HnPropType = HnProps | NavigationInjectedProps 
 
 export interface Title {
     value: string;
